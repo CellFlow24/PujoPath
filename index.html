@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PujoPath | পুজোপাথ</title>
-    <!-- Google Fonts: Hind Siliguri for Bengali, Galada for headings -->
     <link href="https://fonts.googleapis.com/css2?family=Galada&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,54 +12,67 @@
         
         <!-- Screen 1: Home / Start Screen -->
         <div id="home-screen" class="screen active">
-            <div class="header">
+            <div class="header bounce-in">
                 <img src="puja.png" alt="PujoPath Logo" class="logo">
                 <h1>পুজোপাথ</h1>
                 <p>শ্যামবাজার থেকে শোভাবাজার - সেরা পুজোর রুটম্যাপ!</p>
             </div>
             
-            <div class="selection-box">
+            <div class="selection-box fade-in-up">
                 <h3>কোথা থেকে যাত্রা শুরু করবেন?</h3>
-                <button class="btn primary-btn" onclick="startJourney('shyambazar')">শ্যামবাজার থেকে (১ - ১৩)</button>
-                <button class="btn secondary-btn" onclick="startJourney('shobhabazar')">শোভাবাজার থেকে (১৩ - ১)</button>
+                <button class="btn primary-btn" onclick="showList('shyambazar')">শ্যামবাজার থেকে</button>
+                <button class="btn secondary-btn" onclick="showList('shobhabazar')">শোভাবাজার থেকে</button>
             </div>
         </div>
 
-        <!-- Screen 2: Journey Tracking Screen -->
+        <!-- Screen 2: List Screen (New) -->
+        <div id="list-screen" class="screen">
+            <div class="header">
+                <h2>পুজোর সম্পূর্ণ তালিকা</h2>
+            </div>
+            <div id="pandal-list-container" class="list-container">
+                <!-- List will be generated via JS -->
+            </div>
+            <div class="start-btn-container fade-in-up">
+                <button class="btn action-btn pulse-anim" onclick="beginJourneyFlow()">যাত্রা শুরু করুন 🚀</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Journey Tracking Screen -->
         <div id="journey-screen" class="screen">
-            <div class="top-bar">
+            <div class="top-bar slide-down">
                 <h2 id="current-stop-number">স্টপ ১/১৩</h2>
                 <button class="btn restart-btn" onclick="confirmRestart()">রিসেট করুন</button>
             </div>
 
             <div class="card-container">
-                <div class="pandal-card">
+                <div class="pandal-card scale-in" id="pandal-card-anim">
                     <h2 id="pandal-name">প্যান্ডেলের নাম</h2>
                     
-                    <a id="pandal-map-link" href="#" target="_blank" class="btn map-btn">
+                    <a id="pandal-map-link" href="#" target="_blank" class="btn map-btn hover-pop">
                         ম্যাপ দেখুন 📍
                     </a>
 
                     <div class="action-area">
-                        <button class="btn check-btn" onclick="markAsVisited()">
+                        <button class="btn check-btn hover-pop" onclick="markAsVisited()">
                             দর্শন সম্পন্ন ✔
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="progress-text">
+            <div class="progress-text fade-in-up">
                 <p id="progress-info">পরবর্তী গন্তব্য নিচে আপডেট হবে...</p>
             </div>
         </div>
 
-        <!-- Screen 3: Journey Complete Screen -->
+        <!-- Screen 4: Journey Complete Screen -->
         <div id="complete-screen" class="screen">
-            <div class="header">
+            <div class="header bounce-in">
                 <h1>শুভ বিজয়া!</h1>
                 <p>আমাদের পুজো পরিক্রমা সফলভাবে সম্পন্ন হয়েছে।</p>
             </div>
-            <img src="bondhura.jpg" alt="Friends Group Photo" class="group-photo">
-            <button class="btn primary-btn mt-20" onclick="confirmRestart()">নতুন করে শুরু করুন</button>
+            <img src="bondhura.jpg" alt="Friends Group Photo" class="group-photo scale-in">
+            <button class="btn primary-btn mt-20 hover-pop" onclick="confirmRestart()">নতুন করে শুরু করুন</button>
         </div>
 
     </div>
