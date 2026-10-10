@@ -1,4 +1,3 @@
-// Data Array based on your map links
 const pandals = [
     { id: 1, name: "শ্যামবাজার পল্লী সংঘ", link: "https://maps.app.goo.gl/cMerW7WpH88oXkVr9" },
     { id: 2, name: "শ্যাম স্কোয়ার", link: "https://maps.app.goo.gl/BxKDhAMwCsL5wPNQA" },
@@ -18,19 +17,55 @@ const pandals = [
 let route = [];
 let currentIndex = 0;
 
+// Initialize app on load
+window.onload = () => {
+    history.replaceState({ screen: 'home-screen' }, '', '#home-screen');
+};
+
+// Handle mobile back button
+window.addEventListener('popstate', function(event) {
+    if (event.state && event.state.screen) {
+        showScreenWithoutHistory(event.state.screen);
+    } else {
+        showScreenWithoutHistory('home-screen');
+    }
+});
+
 function switchScreen(screenId) {
+    showScreenWithoutHistory(screenId);
+    history.pushState({ screen: screenId }, '', '#' + screenId);
+}
+
+function showScreenWithoutHistory(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
     });
     document.getElementById(screenId).classList.add('active');
 }
 
-function startJourney(direction) {
+function showList(direction) {
     if (direction === 'shyambazar') {
-        route = [...pandals]; // 1 to 13
+        route = [...pandals];
     } else {
-        route = [...pandals].reverse(); // 13 to 1
+        route = [...pandals].reverse();
     }
+    
+    const container = document.getElementById('pandal-list-container');
+    container.innerHTML = '';
+    
+    // Generate list with staggered animation delays
+    route.forEach((pandal, index) => {
+        let div = document.createElement('div');
+        div.className = 'list-item';
+        div.style.animationDelay = `${index * 0.15}s`;
+        div.innerText = `${index + 1}. ${pandal.name}`;
+        container.appendChild(div);
+    });
+    
+    switchScreen('list-screen');
+}
+
+function beginJourneyFlow() {
     currentIndex = 0;
     updateUI();
     switchScreen('journey-screen');
@@ -44,12 +79,10 @@ function updateUI() {
 
     const currentPandal = route[currentIndex];
     
-    // Update text and links
     document.getElementById('current-stop-number').innerText = `স্টপ ${currentIndex + 1}/${route.length}`;
     document.getElementById('pandal-name').innerText = currentPandal.name;
     document.getElementById('pandal-map-link').href = currentPandal.link;
 
-    // Update upcoming info
     if (currentIndex + 1 < route.length) {
         document.getElementById('progress-info').innerText = `পরবর্তী গন্তব্য: ${route[currentIndex + 1].name}`;
     } else {
@@ -58,18 +91,30 @@ function updateUI() {
 }
 
 function markAsVisited() {
-    currentIndex++;
+    const card = document.getElementById('pandal-card-anim');
     
-    // Add a small delay for animation effect if needed
-    const card = document.querySelector('.pandal-card');
-    card.style.transform = 'scale(0.95)';
-    card.style.opacity = '0.5';
+    // Exit animation
+    card.classList.remove('scale-in', 'card-enter');
+    card.classList.add('card-exit');
     
     setTimeout(() => {
-        updateUI();
-        card.style.transform = 'scale(1)';
-        card.style.opacity = '1';
-    }, 200);
+        currentIndex++;
+        if (currentIndex < route.length) {
+            updateUI();
+            // Enter animation for next card
+            card.classList.remove('card-exit');
+            card.classList.add('card-enter');
+            
+            // Allow browser to render, then remove enter class to settle in center
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    card.classList.remove('card-enter');
+                }, 50);
+            });
+        } else {
+            updateUI(); // This will trigger the complete screen
+        }
+    }, 500); // 500ms matches the CSS transition time
 }
 
 function confirmRestart() {
