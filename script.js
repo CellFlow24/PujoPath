@@ -20,6 +20,15 @@ let currentIndex = 0;
 // Initialize app on load
 window.onload = () => {
     history.replaceState({ screen: 'home-screen' }, '', '#home-screen');
+    
+    // Initialize AOS
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 600,
+            easing: 'ease-out-cubic',
+            once: true // একবারই অ্যানিমেশন হবে
+        });
+    }
 };
 
 // Handle mobile back button
@@ -53,11 +62,15 @@ function showList(direction) {
     const container = document.getElementById('pandal-list-container');
     container.innerHTML = '';
     
-    // Generate list with staggered animation delays
+    // Generate list with AOS animation attributes
     route.forEach((pandal, index) => {
         let div = document.createElement('div');
         div.className = 'list-item';
-        div.style.animationDelay = `${index * 0.15}s`;
+        
+        // AOS attributes added here
+        div.setAttribute('data-aos', 'fade-up'); 
+        div.setAttribute('data-aos-delay', index * 50); 
+        
         div.innerText = `${index + 1}. ${pandal.name}`;
         container.appendChild(div);
     });
