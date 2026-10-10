@@ -20,7 +20,6 @@ body {
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    /* Optional: Add a subtle festive background image URL here if you want */
 }
 
 .app-container {
@@ -29,15 +28,15 @@ body {
     background: url('https://www.transparenttextures.com/patterns/cream-dust.png'), linear-gradient(135deg, #fff, var(--light-gold));
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     min-height: 100vh;
 }
 
 .screen {
     display: none;
     padding: 30px 20px;
-    animation: fadeIn 0.5s ease-in-out;
-    height: 100%;
+    min-height: 100vh;
     flex-direction: column;
     align-items: center;
 }
@@ -55,7 +54,7 @@ h1, h2, h3 {
 
 .header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     margin-top: 20px;
 }
 
@@ -92,13 +91,9 @@ h1, h2, h3 {
     font-family: 'Hind Siliguri', sans-serif;
     font-weight: 700;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
     text-align: center;
     text-decoration: none;
-}
-
-.btn:active {
-    transform: scale(0.95);
 }
 
 .primary-btn {
@@ -111,6 +106,14 @@ h1, h2, h3 {
     background: var(--gold);
     color: var(--primary-red);
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.action-btn {
+    background: linear-gradient(45deg, var(--primary-red), #c21807);
+    color: var(--white);
+    font-size: 1.3rem;
+    box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+    border: 2px solid var(--gold);
 }
 
 .map-btn {
@@ -134,10 +137,44 @@ h1, h2, h3 {
     width: auto;
 }
 
+.hover-pop:active {
+    transform: scale(0.9);
+}
+
+/* List Screen */
+.list-container {
+    width: 100%;
+    margin-bottom: 20px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.list-item {
+    background: var(--white);
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border-left: 5px solid var(--primary-red);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    font-weight: 600;
+    font-size: 1.1rem;
+    opacity: 0; 
+    transform: translateX(50px);
+    animation: slideInRight 0.5s forwards ease-out;
+}
+
+.start-btn-container {
+    width: 100%;
+    margin-top: auto;
+    padding-bottom: 20px;
+}
+
 /* Card */
 .card-container {
     width: 100%;
     margin-top: 20px;
+    perspective: 1000px;
 }
 
 .pandal-card {
@@ -148,11 +185,13 @@ h1, h2, h3 {
     text-align: center;
     border: 2px solid var(--light-gold);
     position: relative;
+    transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .pandal-card h2 {
     font-size: 2rem;
     margin-bottom: 20px;
+    color: var(--primary-red);
 }
 
 .top-bar {
@@ -170,7 +209,6 @@ h1, h2, h3 {
     font-weight: 600;
 }
 
-/* Image styling for completion screen */
 .group-photo {
     width: 100%;
     max-height: 300px;
@@ -180,10 +218,61 @@ h1, h2, h3 {
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     margin-top: 20px;
 }
-
 .mt-20 { margin-top: 20px; }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+/* Custom Scrollbar for List */
+.list-container::-webkit-scrollbar { width: 5px; }
+.list-container::-webkit-scrollbar-track { background: transparent; }
+.list-container::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+/* ANIMATIONS */
+@keyframes slideInRight {
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(139, 0, 0, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 0, 0, 0); }
+}
+.pulse-anim { animation: pulse 2s infinite; }
+
+.bounce-in {
+    animation: bounceIn 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
+    20% { transform: scale3d(1.1, 1.1, 1.1); }
+    40% { transform: scale3d(0.9, 0.9, 0.9); }
+    60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+    80% { transform: scale3d(0.97, 0.97, 0.97); }
+    100% { opacity: 1; transform: scale3d(1, 1, 1); }
+}
+
+.fade-in-up { animation: fadeInUp 0.6s ease forwards; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-down { animation: slideDown 0.5s ease forwards; }
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.scale-in { animation: scaleIn 0.5s ease forwards; }
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Pandal Card exit animation */
+.card-exit {
+    transform: translateX(-100%) rotateY(-20deg);
+    opacity: 0;
+}
+.card-enter {
+    transform: translateX(100%) rotateY(20deg);
+    opacity: 0;
 }
