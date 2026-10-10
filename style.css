@@ -25,16 +25,45 @@ body {
     overflow: hidden; /* বডিতে স্ক্রল বন্ধ */
 }
 
+/* ১. App Container আপডেট */
 .app-container {
     width: 100%;
     max-width: 480px;
     height: 100dvh;
-    background: url('https://www.transparenttextures.com/patterns/cream-dust.png'), linear-gradient(135deg, #fff, var(--light-gold));
+    /* বেস গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড */
+    background: linear-gradient(135deg, #ffffff, var(--light-gold));
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     position: relative;
-    overflow: hidden; /* বাইরের স্ক্রল বন্ধ করে ভেতরের স্ক্রল চালু রাখব */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    z-index: 1; /* কনটেন্টগুলো যেন ব্যাকগ্রাউন্ডের উপরে থাকে */
+}
+
+/* ২. আলপনা বা ঢাকির ছবির জন্য ওয়াটারমার্ক ওভারলে (নতুন যোগ করা হলো) */
+.app-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* --- অপশন ১: আলপনা প্যাটার্ন (বর্তমানে এটি সেট করা আছে) --- */
+    background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    
+    /* --- অপশন ২: ঢাকির ছবি (যদি আপনি স্টক ইমেজ বা নিজের ছবি দিতে চান) --- 
+       যদি ঢাকির ছবি দিতে চান, তবে উপরের ৩ লাইন মুছে নিচের ২ লাইন আনকমেন্ট করে দিন:
+       background-image: url('dhaki.jpg'); 
+       background-size: cover; 
+       background-position: center;
+    ---------------------------------------------------------- */
+
+    opacity: 0.15; /* জলছাপের স্বচ্ছতা। এটি কমালে আরও হালকা হবে (যেমন 0.1), বাড়ালে গাঢ় হবে (যেমন 0.3) */
+    z-index: -1; /* ছবিটিকে পেছনের স্তরে পাঠানোর জন্য */
+    pointer-events: none; /* যাতে বাটনে ক্লিক করতে কোনো সমস্যা না হয় */
 }
 
 /* ২. Screen লেআউট আপডেট */
