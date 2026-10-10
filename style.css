@@ -13,32 +13,57 @@
     box-sizing: border-box;
 }
 
+/* ১. Body এবং App Container আপডেট (স্ক্রিনে একদম পারফেক্ট ফিট করার জন্য) */
 body {
     font-family: 'Hind Siliguri', sans-serif;
     background-color: var(--bg-color);
     color: var(--dark);
     display: flex;
     justify-content: center;
-    min-height: 100vh;
+    height: 100dvh; /* 100vh এর বদলে dvh ব্যবহার করলে মোবাইলের এড্রেস বার বা নেভিগেশন বারের সাথে পারফেক্ট ফিট হবে */
+    margin: 0;
+    overflow: hidden; /* বডিতে স্ক্রল বন্ধ */
 }
 
 .app-container {
     width: 100%;
     max-width: 480px;
+    height: 100dvh;
     background: url('https://www.transparenttextures.com/patterns/cream-dust.png'), linear-gradient(135deg, #fff, var(--light-gold));
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
-    min-height: 100vh;
+    overflow: hidden; /* বাইরের স্ক্রল বন্ধ করে ভেতরের স্ক্রল চালু রাখব */
+    display: flex;
+    flex-direction: column;
 }
 
+/* ২. Screen লেআউট আপডেট */
 .screen {
     display: none;
-    padding: 30px 20px;
-    min-height: 100vh;
+    padding: 20px 20px 0; /* নিচে প্যাডিং 0 করা হলো যাতে বাটন জায়গা পায় */
+    height: 100%;
+    width: 100%;
     flex-direction: column;
     align-items: center;
+    overflow: hidden; /* পুরো স্ক্রিন ফিক্সড থাকবে, শুধু লিস্ট স্ক্রল হবে */
+}
+
+/* ৩. List Container আপডেট (লিস্টকে পুরো ফাঁকা জায়গা নেওয়ার জন্য) */
+.list-container {
+    width: 100%;
+    flex: 1; /* এটি মাঝখানের পুরো খালি জায়গাটা নিয়ে নেবে */
+    max-height: none; /* আগের 50vh লিমিট সরিয়ে দেওয়া হলো */
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-bottom: 15px; /* বাটনের ঠিক ওপরে একটু ফাঁকা জায়গা */
+}
+
+/* ৪. Start Button Container আপডেট (বাটনটি যেন সংকুচিত না হয় এবং নিচে ফিক্সড থাকে) */
+.start-btn-container {
+    width: 100%;
+    padding-bottom: 20px; /* নিচের দিকে প্যাডিং */
+    flex-shrink: 0; /* লিস্ট বড় হলেও বাটনটি যেন ছোট হয়ে না যায় */
+    background: transparent;
 }
 
 .screen.active {
@@ -141,15 +166,6 @@ h1, h2, h3 {
     transform: scale(0.9);
 }
 
-/* List Screen */
-.list-container {
-    width: 100%;
-    margin-bottom: 20px;
-    max-height: 50vh;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
 .list-item {
     background: var(--white);
     padding: 12px 15px;
@@ -164,11 +180,6 @@ h1, h2, h3 {
     animation: slideInRight 0.5s forwards ease-out;
 }
 
-.start-btn-container {
-    width: 100%;
-    margin-top: auto;
-    padding-bottom: 20px;
-}
 
 /* Card */
 .card-container {
